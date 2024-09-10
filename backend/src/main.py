@@ -24,9 +24,11 @@ import sys
 import shutil
 import urllib.parse
 import json
+import os
 
 warnings.filterwarnings("ignore")
 load_dotenv()
+
 logging.basicConfig(format='%(asctime)s - %(message)s',level='INFO')
 
 def create_source_node_graph_url_s3(graph, model, source_url, aws_access_key_id, aws_secret_access_key, source_type):
@@ -292,7 +294,9 @@ def processing_source(uri, userName, password, database, model, file_name, pages
       graphDb_data_Access.update_source_node(obj_source_node)
       
       logging.info('Update the status as Processing')
+      logging.info(f"Getting env value {os.environ.get('OPENAI_API_KEY')}")
       update_graph_chunk_processed = int(os.environ.get('UPDATE_GRAPH_CHUNKS_PROCESSED'))
+      logging.info(f'Test chunklink length: {len(chunkId_chunkDoc_list)}')
       # selected_chunks = []
       is_cancelled_status = False
       job_status = "Completed"
@@ -544,7 +548,7 @@ def manually_cancelled_job(graph, filenames, source_types, merged_dir, uri):
           folder_name = create_gcs_bucket_folder_name_hashed(uri, file_name)
           delete_file_from_gcs(BUCKET_UPLOAD,folder_name,file_name)
       else:
-        logging.info(f'Deleted File Path: {merged_file_path} and Deleted File Name : {file_name}')
+        logging.info(f'manually_cancelled_job Deleted File Path: {merged_file_path} and Deleted File Name : {file_name}')
         delete_uploaded_local_file(merged_file_path,file_name)
   return "Cancelled the processing job successfully"
 

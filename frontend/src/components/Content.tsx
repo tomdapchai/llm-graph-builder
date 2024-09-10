@@ -610,7 +610,9 @@ const Content: React.FC<ContentProps> = ({
   }, [isSchema]);
 
   const onClickHandler = () => {
+    console.log('0');
     if (childRef.current?.getSelectedRows().length) {
+      console.log('1');
       let selectedLargeFiles: CustomFile[] = [];
       childRef.current?.getSelectedRows().forEach((f) => {
         const parsedData: CustomFile = f;
@@ -624,11 +626,14 @@ const Content: React.FC<ContentProps> = ({
         }
       });
       if (selectedLargeFiles.length) {
+        console.log('2');
         setshowConfirmationModal(true);
       } else {
+        console.log('3');
         handleGenerateGraph(childRef.current?.getSelectedRows().filter((f) => f.status === 'New'));
       }
     } else if (filesData.length) {
+      console.log('4');
       const largefiles = filesData.filter((f) => {
         if (typeof f.size === 'number' && f.status === 'New' && f.size > largeFileSize) {
           return true;

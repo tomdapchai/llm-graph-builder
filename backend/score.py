@@ -154,10 +154,11 @@ async def extract_knowledge_graph_from_file(
           Nodes and Relations created in Neo4j databse for the pdf file
     """
     try:
-        graph = create_graph_database_connection(uri, userName, password, database)   
+        graph = create_graph_database_connection(uri, userName, password, database) 
         graphDb_data_Access = graphDBdataAccess(graph)
         
         if source_type == 'local file':
+            logging.info(f'create_graph_database_connection test local file 1') 
             merged_file_path = os.path.join(MERGED_DIR,file_name)
             logging.info(f'File path:{merged_file_path}')
             result = await asyncio.to_thread(
@@ -206,7 +207,7 @@ async def extract_knowledge_graph_from_file(
                 time.sleep(5)
                 delete_file_from_gcs(BUCKET_UPLOAD,folder_name,file_name)
             else:
-                logging.info(f'Deleted File Path: {merged_file_path} and Deleted File Name : {file_name}')
+                logging.info(f'extract_knowledge_graph_from_file Deleted File Path: {merged_file_path} and Deleted File Name : {file_name}')
                 delete_uploaded_local_file(merged_file_path,file_name)
         json_obj = {'message':message,'error_message':error_message, 'file_name': file_name,'status':'Failed','db_url':uri,'failed_count':1, 'source_type': source_type, 'source_url':source_url, 'wiki_query':wiki_query, 'logging_time': formatted_time(datetime.now(timezone.utc))}
         logger.log_struct(json_obj)
@@ -240,7 +241,7 @@ async def post_processing(uri=Form(), userName=Form(), password=Form(), database
     try:
         graph = create_graph_database_connection(uri, userName, password, database)
         tasks = set(map(str.strip, json.loads(tasks)))
-
+        logging.info(f'check')
         if "materialize_text_chunk_similarities" in tasks:
             await asyncio.to_thread(update_graph, graph)
             json_obj = {'api_name': 'post_processing/update_similarity_graph', 'db_url': uri, 'logging_time': formatted_time(datetime.now(timezone.utc))}

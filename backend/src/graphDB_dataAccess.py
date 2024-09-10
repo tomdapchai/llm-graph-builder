@@ -205,7 +205,7 @@ class graphDBdataAccess:
                 folder_name = create_gcs_bucket_folder_name_hashed(uri, file_name)
                 delete_file_from_gcs(BUCKET_UPLOAD,folder_name,file_name)
             else:
-                logging.info(f'Deleted File Path: {merged_file_path} and Deleted File Name : {file_name}')
+                logging.info(f'delete_file_from_graph Deleted File Path: {merged_file_path} and Deleted File Name : {file_name}')
                 delete_uploaded_local_file(merged_file_path,file_name)
         query_to_delete_document=""" 
            MATCH (d:Document) where d.fileName in $filename_list and d.fileSource in $source_types_list

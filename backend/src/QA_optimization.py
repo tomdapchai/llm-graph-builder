@@ -23,7 +23,7 @@ class ParallelComponent:
         self.password = password
         self.question = question
         self.session_id = session_id
-        self.model_version='gpt-4-0125-preview'
+        self.model_version='gpt-4o-mini'
         self.llm = ChatOpenAI(model= self.model_version, temperature=0)
 
     # async def execute(self):

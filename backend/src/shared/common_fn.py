@@ -70,7 +70,8 @@ def create_graph_database_connection(uri, userName, password, database):
   if enable_user_agent:
     graph = Neo4jGraph(url=uri, database=database, username=userName, password=password, refresh_schema=False, sanitize=True,driver_config={'user_agent':os.environ.get('NEO4J_USER_AGENT')})  
   else:
-    graph = Neo4jGraph(url=uri, database=database, username=userName, password=password, refresh_schema=False, sanitize=True)    
+    graph = Neo4jGraph(url=uri, database=database, username=userName, password=password, refresh_schema=False, sanitize=True)
+    logging.info(f'create_graph_database_connection')    
   return graph
 
 
